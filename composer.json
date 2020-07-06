@@ -1,12 +1,11 @@
 {
+    "name": "accolon/kara",
+    "license": "MIT",
+    "type": "library",
     "require": {},
     "autoload": {
         "psr-4": {
             "Kara\\": "src/"
         }
-    },
-    "scripts": {
-        "test-consumer": "php test/UserConsumer.php",
-        "test-producer": "php test/TestProducer.php"
     }
 }
