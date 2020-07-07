@@ -2,6 +2,7 @@
     "name": "accolon/kara",
     "license": "MIT",
     "type": "library",
+    "description": "Library management of Queue with Kafka",
     "require": {
         "react/event-loop": "^1.1"
     },
