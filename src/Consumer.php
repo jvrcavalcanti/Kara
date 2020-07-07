@@ -19,6 +19,20 @@ abstract class Consumer
         $this->offset = $offset;
     }
 
+    public function unserialize($data)
+    {
+        switch ($this->getSerializeType()) {
+            case Serialize::TEXT:
+                return $data;
+
+            case Serialize::JSON:
+                return json_decode($data);
+
+            case Serialize::PHP:
+                return unserialize($data);
+        }
+    }
+
     public function run()
     {
         $consumer = new \RdKafka\Consumer(Connection::getConfig());
@@ -27,18 +41,17 @@ abstract class Consumer
         $topic = $consumer->newTopic($this->getTopic());
         $topic->consumeStart($this->particion, $this->offset);
 
-
-        while (true) {
+        Connection::getLoop()->addPeriodicTimer(0.1, function () use ($topic) {
             $msg = $topic->consume(0, 1000);
             
             if (null === $msg || $msg->err === RD_KAFKA_RESP_ERR__PARTITION_EOF) {
-                continue;
-                // break;
+                return;
             } elseif ($msg->err) {
                 throw new Exception($msg->err);
             } else {
+                $msg->payload = $this->unserialize($msg->payload);
                 $this->handle($msg);
             }
-        }
+        });
     }
 }

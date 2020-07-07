@@ -2,7 +2,9 @@
     "name": "accolon/kara",
     "license": "MIT",
     "type": "library",
-    "require": {},
+    "require": {
+        "react/event-loop": "^1.1"
+    },
     "autoload": {
         "psr-4": {
             "Kara\\": "src/"
