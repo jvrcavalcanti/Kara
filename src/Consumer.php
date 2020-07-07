@@ -11,7 +11,7 @@ abstract class Consumer
     protected int $particion = 0;
     protected $offset = \RD_KAFKA_OFFSET_BEGINNING;
 
-    abstract public function handle(\RdKafka\Message $message);
+    abstract public function handle(Message $message);
 
     public function setConfig(int $particion = 0, $offset = \RD_KAFKA_OFFSET_BEGINNING)
     {
@@ -50,7 +50,7 @@ abstract class Consumer
                 throw new Exception($msg->err);
             } else {
                 $msg->payload = $this->unserialize($msg->payload);
-                $this->handle($msg);
+                $this->handle(new Message($msg));
             }
         });
     }
